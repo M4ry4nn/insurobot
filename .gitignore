@@ -1,0 +1,10 @@
+
+logs
+*.log
+pids
+node_modules
+.npm
+*.dat
+.idea
+*.iml
+config/default.json

@@ -1,0 +1,30 @@
+{
+  "name": "messenger-get-started",
+  "version": "1.0.0",
+  "description": "hack zurich pew pew ",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "lint": "jshint --exclude node_modules .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ortolana/insurobot.git"
+  },
+  "author": "Otolana",
+  "dependencies": {
+    "apiai": "^2.0.7",
+    "body-parser": "^1.15.0",
+    "clarifai": "^1.2.1",
+    "config": "^1.20.4",
+    "ejs": "^2.4.2",
+    "express": "^4.13.4",
+    "latest-version": "^2.0.0",
+    "mongodb": "^2.1.6",
+    "request": "^2.72.0"
+  },
+  "engines": {
+    "node": "~4.1.2"
+  }
+}
