@@ -363,14 +363,16 @@ function receivedPostback(event) {
     // button for Structured Messages.
     var payload = event.postback.payload;
 
+    console.log("payload i got form start: " + payload);
+
     if (payload === "START_CONVERSATION") {
 
 
         sendTextMessage(senderID, "Ok, let's start");
 
+        sendStarterMessage(senderID);
 
         //TODO create buttons ---> report claim , check coverage, emergency assistance, abort, (I want to get a new insurance)
-
 
         // TODO callback ---> {action: "report-claim, check-coverage, usw.", userdata: "adrian"};
 
@@ -580,6 +582,41 @@ function sendButtonMessage(recipientId) {
                         type: "phone_number",
                         title: "Call Phone Number",
                         payload: "+16505551234"
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
+
+
+
+function sendStarterMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "How can I help you?",
+                    buttons: [{
+                        type: "postback",
+                        title: "Report a claim",
+                        payload: "EMERGENCY_AGENT"
+                    }, {
+                        type: "postback",
+                        title: "Check your coverage",
+                        payload: "COVERAGE_CHECK"
+                    }, {
+                        type: "postback",
+                        title: "Emergency assistant",
+                        payload: "EMERGENCY_AGENT"
                     }]
                 }
             }
