@@ -339,7 +339,7 @@ function receivedMessage(event) {
      requestBot.on('response', function (response) {
          console.log("Here you got the answer: ");
          console.log(response);
-         checkForOfferResponse(response);
+         checkForOfferResponse(response,senderID);
          sendTextMessage(senderID, response.result.fulfillment.speech);
      });
 
@@ -354,6 +354,8 @@ function receivedMessage(event) {
  function checkForOfferResponse(response) {
 
      if (response.result.metadata.intentName === "insurance.coverage.upgrade-yes") {
+
+         sendGenericMessage(senderID);
 
      }
 
