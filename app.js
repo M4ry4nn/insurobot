@@ -393,6 +393,7 @@ function receivedPostback(event) {
         // got the postback back from the button click at the start
 
         processApiDotAiRequest(payload);
+        console.log("-------------------------------------------------starter postback ----------------------------------------------");
 
     }
 
