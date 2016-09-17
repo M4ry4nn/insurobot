@@ -8,32 +8,23 @@
   </head>
   <body>
 
-    <h1>Login</h1>
+    <h1>Your Insurance Login</h1>
 
     <div>
       This should be a login page. If the user successfully logs, they should 
       be redirect to this link: <a href="<%= redirectURISuccess %>">Complete Account Link</a>
     </div>
-
-    <div>
-      Account linking token: <%= accountLinkingToken %> 
-    </div>
-
-    <div>
-      Redirect URI: <%= redirectURI %> 
-    </div>
-
     <div>
       Redirect URI Successful: <%= redirectURISuccess %> 
     </div>
     <form action="action_page.php">
       First name:<br>
-      <input type="text" name="firstname" value="Mickey">
+      <input type="text" name="username" value="Mickey">
       <br>
       Last name:<br>
-      <input type="text" name="lastname" value="Mouse">
+      <input type="password" name="password" value="Mouse">
       <br><br>
-      <input type="submit" value="Submit">
+      <input type="submit" value="login">
     </form>
 
   </body>
