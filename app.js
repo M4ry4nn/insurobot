@@ -312,6 +312,7 @@ function receivedMessage(event) {
                 url:'https://hackzurich2016.herokuapp.com/dude',
                 body: JSON.stringify(bodyObject)},
             function (error, response, body) {
+                console.log("--------------------------------------------------------"+body);
                 sendTextMessage(senderID, body[0]);
 
                 var obj = {"REPORT-CLAIM-IMAGE": body[0]};
