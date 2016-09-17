@@ -50,9 +50,9 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 
 let chatbot = apiai(API_AI_SCCESS_TOKEN);
 
-let STARTER_TYPES = ["CLAIM_REPORT","EMERGENCY_AGENT", "COVERAGE_CHECK"];
-let OFFER_TYPES = ["BUY_INSURANCE_1","BUY_INSURANCE_2", "BUY_INSURANCE_3"];
-let PAYMENT_OPTIONS = ["PAYMENT_YES","PAYMENT_NO"];
+let STARTER_TYPES = ["CLAIM_REPORT", "EMERGENCY_AGENT", "COVERAGE_CHECK"];
+let OFFER_TYPES = ["BUY_INSURANCE_1", "BUY_INSURANCE_2", "BUY_INSURANCE_3"];
+let PAYMENT_OPTIONS = ["PAYMENT_YES", "PAYMENT_NO"];
 
 
 app.get('/webhook', function (req, res) {
@@ -65,7 +65,6 @@ app.get('/webhook', function (req, res) {
         res.sendStatus(403);
     }
 });
-
 
 
 app.post('/webhook', function (req, res) {
@@ -254,7 +253,7 @@ function receivedMessage(event) {
 
             default:
 
-                processApiDotAiRequest(messageText,senderID);
+                processApiDotAiRequest(messageText, senderID);
 
         }
     } else if (messageAttachments) {
@@ -268,61 +267,60 @@ function receivedMessage(event) {
             var bodyObject = {
                 'url': imgUrl
             };
-            console.log("--------------------------------------------------------"+ JSON.stringify(bodyObject));
+            console.log("--------------------------------------------------------" + JSON.stringify(bodyObject));
 
             request.post({
-                headers: {'content-type': 'application/json'},
-                url:'https://hackzurich2016.herokuapp.com/dude',
-                body: JSON.stringify(bodyObject)},
-            function (error, response, body) {
-                console.log("--------------------------------------------------------"+body);
-                var arr = JSON.parse(body);
+                    headers: {'content-type': 'application/json'},
+                    url: 'https://hackzurich2016.herokuapp.com/dude',
+                    body: JSON.stringify(bodyObject)
+                },
+                function (error, response, body) {
+                    console.log("--------------------------------------------------------" + body);
+                    var arr = JSON.parse(body);
 
-                var obj = {"REPORT-CLAIM-IMAGE": arr[0]};
-                console.log("-------------------------------------------------------OBJ"+obj);
+                    var obj = {"REPORT-CLAIM-IMAGE": arr[0]};
+                    console.log("-------------------------------------------------------OBJ" + obj);
 
-                processApiDotAiRequest(JSON.stringify(obj),senderID);
+                    processApiDotAiRequest(JSON.stringify(obj), senderID);
 
 
+                    // send pic to api.ai with contracted format
 
-                // send pic to api.ai with contracted format
-
-            });
+                });
         }
 
     }
 }
 
 
- function processApiDotAiRequest(messageText,senderID) {
+function processApiDotAiRequest(messageText, senderID) {
 
-     var requestBot = chatbot.textRequest(messageText);
-     requestBot.on('response', function (response) {
-         console.log("Here you got the answer: ");
-         console.log(response);
-         checkForOfferResponse(response,senderID);
-         sendTextMessage(senderID, response.result.fulfillment.speech);
-     });
+    var requestBot = chatbot.textRequest(messageText);
+    requestBot.on('response', function (response) {
+        console.log("Here you got the answer: ");
+        console.log(response);
+        checkForOfferResponse(response, senderID);
+        sendTextMessage(senderID, response.result.fulfillment.speech);
+    });
 
-     requestBot.on('error', function (error) {
-         console.log(error);
-     });
+    requestBot.on('error', function (error) {
+        console.log(error);
+    });
 
-     requestBot.end();
+    requestBot.end();
 
- }
+}
 
- function checkForOfferResponse(response,senderID) {
+function checkForOfferResponse(response, senderID) {
 
-     if (response.result.metadata.intentName === "insurance.coverage.upgrade-yes") {
+    if (response.result.metadata.intentName === "insurance.coverage.upgrade-yes") {
 
-         sendGenericMessage(senderID);
+        sendGenericMessage(senderID);
 
-     }
+    }
 
 
-
- }
+}
 
 
 function receivedDeliveryConfirmation(event) {
@@ -364,30 +362,31 @@ function receivedPostback(event) {
 
 
     }
-    else if (_.includes(STARTER_TYPES,payload)) {
+    else if (_.includes(STARTER_TYPES, payload)) {
 
         // got the postback back from the button click at the start
 
         if (payload === STARTER_TYPES[0]) {
-            sendTextMessage(senderID, "Ok, how would you like to describe your claim?");
             sendInputChooseMessage(senderID);
 
         }
 
     }
-    else if (_.includes(PAYMENT_OPTIONS,payload)) {
-        sendReceiptMessage(senderID);
-        sendTextMessage(senderID,"Payment completed! That was simple, wasn't it?");
-        sendTextMessage(senderID,"If you need anything else just text me :)");
+    else if (_.includes(PAYMENT_OPTIONS, payload)) {
+        sendReceiptMessage(senderID).then(function (result) {
+            sendTextMessage(senderID, "Payment completed! That was simple, wasn't it?");
+        }).then(function (result) {
+            sendTextMessage(senderID, "If you need anything else just text me :)");
+        });
 
     }
 
-    else if (_.includes(OFFER_TYPES,payload)) {
+    else if (_.includes(OFFER_TYPES, payload)) {
         sendPaymentDataButton(senderID);
     }
 
-    else if(payload === "IMAGE_INPUT") {
-        sendTextMessage(senderID, "ok, just send me a picture of the affected object.");
+    else if (payload === "IMAGE_INPUT") {
+        sendTextMessage(senderID, "Ok, just send me a picture of the affected object.");
 
     }
 
@@ -605,11 +604,11 @@ function sendPaymentDataButton(recipientId) {
                     text: "Are you sure you want to complete the payment?",
                     buttons: [{
                         type: "postback",
-                        title: "Just do it!",
+                        title: "Yes!",
                         payload: "PAYMENT_YES"
                     }, {
                         type: "postback",
-                        title: "No, forget it! Cancel the transaction!",
+                        title: "No, cancel it!",
                         payload: "PAYMENT_NO"
                     }]
                 }
@@ -652,7 +651,6 @@ function sendStarterMessage(recipientId) {
 
     callSendAPI(messageData);
 }
-
 
 
 function sendInputChooseMessage(recipientId) {
@@ -712,35 +710,35 @@ function sendGenericMessage(recipientId) {
                                 title: "Buy it", //TODO 3 bullets with coverage, price
                                 payload: "BUY_INSURANCE_3",
                             }],
-                        },{
-                        title: "Standard",
-                        subtitle: "basic coverage",
-                        item_url: "www.myinsurance.ch",
-                        image_url: SERVER_URL + "/assets/2dollar.png",
-                        buttons: [{
-                            type: "web_url",
-                            url: "http://www.sombreromex.com/",
-                            title: "get more information"
                         }, {
-                            type: "postback",
-                            title: "Buy it",
-                            payload: "BUY_INSURANCE_2",
-                        }],
-                    }, {
-                        title: "Premium",
-                        subtitle: "additional support in case of a claim",
-                        item_url: "www.myinsurance.ch",
-                        image_url: SERVER_URL + "/assets/3dollar.png",
-                        buttons: [{
-                            type: "web_url",
-                            url: "http://www.sombreromex.com/",
-                            title: "get more information"
+                            title: "Standard",
+                            subtitle: "basic coverage",
+                            item_url: "www.myinsurance.ch",
+                            image_url: SERVER_URL + "/assets/2dollar.png",
+                            buttons: [{
+                                type: "web_url",
+                                url: "http://www.sombreromex.com/",
+                                title: "get more information"
+                            }, {
+                                type: "postback",
+                                title: "Buy it",
+                                payload: "BUY_INSURANCE_2",
+                            }],
                         }, {
-                            type: "postback",
-                            title: "Buy it",
-                            payload: "BUY_INSURANCE_1",
+                            title: "Premium",
+                            subtitle: "additional support in case of a claim",
+                            item_url: "www.myinsurance.ch",
+                            image_url: SERVER_URL + "/assets/3dollar.png",
+                            buttons: [{
+                                type: "web_url",
+                                url: "http://www.sombreromex.com/",
+                                title: "get more information"
+                            }, {
+                                type: "postback",
+                                title: "Buy it",
+                                payload: "BUY_INSURANCE_1",
+                            }]
                         }]
-                    }]
                 }
             }
         }
@@ -773,14 +771,14 @@ function sendReceiptMessage(recipientId) {
                     timestamp: "1428444852",
                     elements: [{
                         title: "Insurance payment for 12 month",
-                        subtitle: "Includes: headset, sensor, remote",
+                        subtitle: "Includes: fire and water damage",
                         quantity: 1,
                         price: 599.00,
                         currency: "USD",
                         image_url: SERVER_URL + "/assets/riftsq.png"
                     }, {
-                        title: "Insurance payment for 12 month",
-                        subtitle: "Frost White",
+                        title: "Customer participation",
+                        subtitle: "basic",
                         quantity: 1,
                         price: 99.99,
                         currency: "USD",
