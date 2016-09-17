@@ -665,7 +665,7 @@ function sendInputChooseMessage(recipientId) {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: "",
+                    text: "Ok, how would you like to describe your claim?",
                     buttons: [{
                         type: "postback",
                         title: "Image",
