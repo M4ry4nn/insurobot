@@ -552,7 +552,7 @@ function sendTextMessage(recipientId, messageText) {
         }
     };
 
-    callSendAPI(messageData);
+    return callSendAPI(messageData);
 }
 
 /*
@@ -810,7 +810,7 @@ function sendReceiptMessage(recipientId) {
         }
     };
 
-    callSendAPI(messageData);
+    return callSendAPI(messageData);
 }
 
 /*
