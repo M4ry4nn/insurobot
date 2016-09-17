@@ -9,7 +9,8 @@ const
     request = require('request'),
     apiai = require("apiai"),
     mongodb = require("mongodb"),
-    _ = require('lodash');
+    _ = require('lodash'),
+    async = require('async');
 
 
 var app = express();
@@ -374,11 +375,15 @@ function receivedPostback(event) {
 
     }
     else if (_.includes(PAYMENT_OPTIONS, payload)) {
-        sendReceiptMessage(senderID).then(function (result) {
-            sendTextMessage(senderID, "Payment completed! That was simple, wasn't it?");
-        }).then(function (result) {
-            sendTextMessage(senderID, "If you need anything else just text me :)");
+        async.series([
+            sendReceiptMessage(senderID),
+            sendTextMessage(senderID, "Payment completed! That was simple, wasn't it?"),
+            sendTextMessage(senderID, "If you need anything else just text me :)")
+        ], function (err, results) {
+            // Here, results is an array of the value from each function
+            console.log("FINIIIIIIIIIIIIIIIISHED" + results); // outputs: ['two', 'five']
         });
+
 
     }
 
