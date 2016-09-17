@@ -6,7 +6,7 @@ const
     crypto = require('crypto'),
     express = require('express'),
     https = require('https'),
-    request = require('sync-request'),
+    request = require('request'),
     apiai = require("apiai"),
     mongodb = require("mongodb"),
     _ = require('lodash');
