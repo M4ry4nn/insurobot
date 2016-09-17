@@ -316,7 +316,7 @@ function receivedMessage(event) {
 
                 var obj = {"REPORT-CLAIM-IMAGE": " "+ body[0]};
 
-                processApiDotAiRequest(obj,senderID);
+                processApiDotAiRequest(JSON.stringify(obj),senderID);
 
 
 
@@ -336,6 +336,7 @@ function receivedMessage(event) {
      requestBot.on('response', function (response) {
          console.log("Here you got the answer: ");
          console.log(response);
+         checkForOfferResponse(response);
          sendTextMessage(senderID, response.result.fulfillment.speech);
      });
 
@@ -344,6 +345,16 @@ function receivedMessage(event) {
      });
 
      requestBot.end();
+
+ }
+
+ function checkForOfferResponse(response) {
+
+     if (response.result.metadata.intentName === "insurance.coverage.upgrade-yes") {
+
+     }
+
+
 
  }
 
@@ -712,8 +723,23 @@ function sendGenericMessage(recipientId) {
                 type: "template",
                 payload: {
                     template_type: "generic",
-                    elements: [{
-                        title: "Standart",
+                    elements: [
+                        {
+                            title: "Minimum",
+                            subtitle: "basic coverage",
+                            item_url: "https://www.oculus.com/en-us/rift/",
+                            image_url: SERVER_URL + "/assets/rift.png",
+                            buttons: [{
+                                type: "web_url",
+                                url: "https://www.oculus.com/en-us/rift/",
+                                title: "get more informations"
+                            }, {
+                                type: "postback",
+                                title: "Buy it", //TODO 3 bullets with coverage, price
+                                payload: "Payload for first bubble",
+                            }],
+                        },{
+                        title: "Standard",
                         subtitle: "basic coverage",
                         item_url: "https://www.oculus.com/en-us/rift/",
                         image_url: SERVER_URL + "/assets/rift.png",
