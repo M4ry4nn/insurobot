@@ -277,7 +277,6 @@ function receivedMessage(event) {
             function (error, response, body) {
                 console.log("--------------------------------------------------------"+body);
                 var arr = JSON.parse(body);
-                sendTextMessage(senderID, arr[0]);
 
                 var obj = {"REPORT-CLAIM-IMAGE": arr[0]};
                 console.log("-------------------------------------------------------OBJ"+obj);
@@ -291,7 +290,6 @@ function receivedMessage(event) {
             });
         }
 
-        sendTextMessage(senderID, "Message with attachment received");
     }
 }
 
@@ -357,7 +355,7 @@ function receivedPostback(event) {
 
     if (payload === "START_CONVERSATION") {
 
-        sendTextMessage(senderID, "Ok, let's start");
+        sendTextMessage(senderID, "Ok, let's start.");
         sendStarterMessage(senderID);
 
         // TODO callback ---> {action: "report-claim, check-coverage, usw.", userdata: "adrian"};
@@ -379,15 +377,17 @@ function receivedPostback(event) {
     }
     else if (_.includes(PAYMENT_OPTIONS,payload)) {
         sendReceiptMessage(senderID);
+        sendTextMessage(senderID,"Payment completed! That was simple, wasn't it?");
+        sendTextMessage(senderID,"If you need anything else just text me :)");
+
     }
 
     else if (_.includes(OFFER_TYPES,payload)) {
         sendPaymentDataButton(senderID);
-        sendTextMessage(senderID,"So that was it! Simple isn't it? If you need anything else just text me");
     }
 
     else if(payload === "IMAGE_INPUT") {
-        sendTextMessage(senderID, "ok, just send me a picture of the damaged object.");
+        sendTextMessage(senderID, "ok, just send me a picture of the affected object.");
 
     }
 
@@ -642,7 +642,7 @@ function sendStarterMessage(recipientId) {
                         payload: "COVERAGE_CHECK"
                     }, {
                         type: "postback",
-                        title: "Emergency assistant",
+                        title: "Emergency assistance",
                         payload: "EMERGENCY_AGENT"
                     }]
                 }
@@ -665,7 +665,7 @@ function sendInputChooseMessage(recipientId) {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: "Input channel",
+                    text: "",
                     buttons: [{
                         type: "postback",
                         title: "Image",
@@ -701,12 +701,12 @@ function sendGenericMessage(recipientId) {
                         {
                             title: "Minimum",
                             subtitle: "basic coverage",
-                            item_url: "https://www.oculus.com/en-us/rift/",
-                            image_url: SERVER_URL + "/assets/rift.png",
+                            item_url: "www.myinsurance.ch",
+                            image_url: SERVER_URL + "/assets/1dollar.png",
                             buttons: [{
                                 type: "web_url",
-                                url: "https://www.oculus.com/en-us/rift/",
-                                title: "get more informations"
+                                url: "http://www.sombreromex.com/",
+                                title: "get more information"
                             }, {
                                 type: "postback",
                                 title: "Buy it", //TODO 3 bullets with coverage, price
@@ -715,12 +715,12 @@ function sendGenericMessage(recipientId) {
                         },{
                         title: "Standard",
                         subtitle: "basic coverage",
-                        item_url: "https://www.oculus.com/en-us/rift/",
-                        image_url: SERVER_URL + "/assets/rift.png",
+                        item_url: "www.myinsurance.ch",
+                        image_url: SERVER_URL + "/assets/2dollar.png",
                         buttons: [{
                             type: "web_url",
-                            url: "https://www.oculus.com/en-us/rift/",
-                            title: "get more informations"
+                            url: "http://www.sombreromex.com/",
+                            title: "get more information"
                         }, {
                             type: "postback",
                             title: "Buy it",
@@ -729,12 +729,12 @@ function sendGenericMessage(recipientId) {
                     }, {
                         title: "Premium",
                         subtitle: "additional support in case of a claim",
-                        item_url: "https://www.oculus.com/en-us/touch/",
-                        image_url: SERVER_URL + "/assets/touch.png",
+                        item_url: "www.myinsurance.ch",
+                        image_url: SERVER_URL + "/assets/3dollar.png",
                         buttons: [{
                             type: "web_url",
-                            url: "https://www.oculus.com/en-us/touch/",
-                            title: "Open Web URL"
+                            url: "http://www.sombreromex.com/",
+                            title: "get more information"
                         }, {
                             type: "postback",
                             title: "Buy it",
