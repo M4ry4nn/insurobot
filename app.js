@@ -351,7 +351,7 @@ function receivedMessage(event) {
 
  }
 
- function checkForOfferResponse(response) {
+ function checkForOfferResponse(response,senderID) {
 
      if (response.result.metadata.intentName === "insurance.coverage.upgrade-yes") {
 
