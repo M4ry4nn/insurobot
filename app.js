@@ -302,12 +302,14 @@ function receivedMessage(event) {
             var imgUrl = messageAttachments[0].payload.url;
             console.log(imgUrl);
 
+            var bodyObject = {
+                'url': imgUrl
+            };
+
             request.post({
                 headers: {'content-type': 'application/json'},
                 url:'https://hackzurich2016.herokuapp.com/dude',
-                body: {
-                    'url': imgUrl
-                }},
+                body: bodyObject.toString()},
             function (error, response, body) {
                 console.log("response : "+response);
                 console.log("body :" +body);
