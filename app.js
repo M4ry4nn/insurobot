@@ -8,7 +8,6 @@ const
     https = require('https'),
     request = require('request'),
     apiai = require("apiai"),
-    //imagereco = require("./module/imagereco"),
     mongodb = require("mongodb");
 
 var app = express();
@@ -48,7 +47,7 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
     process.exit(1);
 }
 
-var chatbot = apiai(API_AI_SCCESS_TOKEN);
+//var chatbot = apiai(API_AI_SCCESS_TOKEN);
 
 
 /*
@@ -294,8 +293,8 @@ function receivedMessage(event) {
                 break;
 
             default:
-                var request = chatbot.textRequest(messageText);
-                request.on('response', function (response) {
+                //var request = chatbot.textRequest(messageText);
+             /*request.on('response', function (response) {
                     console.log("Here you got the answer: ");
                     console.log(response);
                     sendTextMessage(senderID, response.result.fulfillment.speech);
@@ -305,8 +304,7 @@ function receivedMessage(event) {
                     console.log(error);
                 });
 
-                request.end();
-
+                request.end(); */
         }
     } else if (messageAttachments) {
         console.log(messageAttachments);
