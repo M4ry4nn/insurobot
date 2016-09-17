@@ -315,6 +315,7 @@ function receivedMessage(event) {
                 sendTextMessage(senderID, body[0]);
 
                 var obj = {"REPORT-CLAIM-IMAGE": body[0]};
+                console.log("-------------------------------------------------------OBJ"+obj);
 
                 processApiDotAiRequest(JSON.stringify(obj),senderID);
 
