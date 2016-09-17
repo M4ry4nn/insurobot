@@ -378,11 +378,11 @@ function receivedPostback(event) {
 
         sendReceiptMessage(senderID);
         var millisecondsToWait = 1000;
-        setTimeout(function() {
-            // Whatever you want to do after the wait
-        }, millisecondsToWait);
+        setTimeout(function () {
             sendTextMessage(senderID, "Payment completed! That was simple, wasn't it?");
             sendTextMessage(senderID, "If you need anything else just text me :)");
+
+        }, millisecondsToWait);
 
     }
 
