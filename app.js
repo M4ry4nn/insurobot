@@ -612,7 +612,7 @@ function sendPaymentDataButton(recipientId) {
                 payload: {
                     template_type: "button",
                     text: "Are you sure you want to complete the payment?",
-                    "buttons":[
+                    buttons:[
                         {
                             "type":"payment",
                             "title":"buy",
