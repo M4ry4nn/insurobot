@@ -313,9 +313,10 @@ function receivedMessage(event) {
                 body: JSON.stringify(bodyObject)},
             function (error, response, body) {
                 console.log("--------------------------------------------------------"+body);
-                sendTextMessage(senderID, JSON.stringify(body[0]));
+                var arr = JSON.parse(body);
+                sendTextMessage(senderID, arr[0]);
 
-                var obj = {"REPORT-CLAIM-IMAGE": body[0]};
+                var obj = {"REPORT-CLAIM-IMAGE": arr[0]};
                 console.log("-------------------------------------------------------OBJ"+obj);
 
                 processApiDotAiRequest(JSON.stringify(obj),senderID);
