@@ -375,15 +375,14 @@ function receivedPostback(event) {
 
     }
     else if (_.includes(PAYMENT_OPTIONS, payload)) {
-        async.series([
-            sendReceiptMessage(senderID),
-            sendTextMessage(senderID, "Payment completed! That was simple, wasn't it?"),
-            sendTextMessage(senderID, "If you need anything else just text me :)")
-        ], function (err, results) {
-            // Here, results is an array of the value from each function
-            console.log("FINIIIIIIIIIIIIIIIISHED" + results); // outputs: ['two', 'five']
-        });
 
+        sendReceiptMessage(senderID);
+        var millisecondsToWait = 1000;
+        setTimeout(function() {
+            // Whatever you want to do after the wait
+        }, millisecondsToWait);
+            sendTextMessage(senderID, "Payment completed! That was simple, wasn't it?");
+            sendTextMessage(senderID, "If you need anything else just text me :)");
 
     }
 
