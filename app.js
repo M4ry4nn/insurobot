@@ -383,6 +383,7 @@ function receivedPostback(event) {
 
     else if (_.includes(OFFER_TYPES,payload)) {
         sendPaymentDataButton(senderID);
+        sendTextMessage(senderID,"So that was it! Simple isn't it? If you need anything else just text me");
     }
 
     else if(payload === "IMAGE_INPUT") {
