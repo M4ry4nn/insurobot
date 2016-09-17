@@ -306,7 +306,7 @@ function receivedMessage(event) {
                 headers: {'content-type': 'application/json'},
                 url:'https://hackzurich2016.herokuapp.com/dude',
                 body: {
-                    url: ''+imgUrl
+                    'url': imgUrl
                 }},
             function (error, response, body) {
                 console.log("response : "+response);
