@@ -612,34 +612,15 @@ function sendPaymentDataButton(recipientId) {
                 payload: {
                     template_type: "button",
                     text: "Are you sure you want to complete the payment?",
-                    buttons:[
-                        {
-                            "type":"payment",
-                            "title":"buy",
-                            "payload":"DEVELOPER_DEFINED_PAYLOAD",
-                            "payment_summary":{
-                                "currency":"USD",
-                                "payment_type":"FIXED_AMOUNT",
-                                "merchant_name":"Basic insurance",
-                                "requested_user_info":[
-                                    "shipping_address",
-                                    "contact_name",
-                                    "contact_phone",
-                                    "contact_email"
-                                ],
-                                "price_list":[
-                                    {
-                                        "label":"Subtotal",
-                                        "amount":"29.99"
-                                    },
-                                    {
-                                        "label":"Taxes",
-                                        "amount":"2.47"
-                                    }
-                                ]
-                            }
-                        }
-                    ]
+                    buttons: [{
+                        type: "postback",
+                        title: "Yes, pay!",
+                        payload: "PAYMENT_YES"
+                    }, {
+                        type: "postback",
+                        title: "No, cancel it!",
+                        payload: "PAYMENT_NO"
+                    }]
                 }
             }
         }
