@@ -1,3 +1,12 @@
+<!-- 
+
+Copyright 2016-present, Facebook, Inc.
+All rights reserved.
+
+This source code is licensed under the license found in the
+LICENSE file in the root directory of this source tree.
+
+-->
 <html>
   <head>
     <title>OAuth Test</title>
@@ -8,26 +17,27 @@
   </head>
   <body>
 
-    <h1>Your Insurance Login</h1>
+    <h1>Login</h1>
 
     <div>
-      <a href="<%= redirectURISuccess %>">Complete Account Link</a>
+      This should be a login page. If the user successfully logs, they should 
+      be redirect to this link: <a href="<%= redirectURISuccess %>">Complete Account Link</a>
     </div>
-      Username:<br>
-      <input type="text" name="username" value="Mickey">
-      <br>
-      Password:<br>
-      <input type="password" name="password" value="Mouse">
-      <br>
-      <button class="float-left submit-button" onclick="window.href ='<%= redirectURISuccess %>'>login</button>
 
-<button id="myButton" class="float-left submit-button" >Home</button>
+    <div>
+      Account linking token: <%= accountLinkingToken %> 
+    </div>
 
-<script type="text/javascript">
-    document.getElementById("myButton").onclick = function () {
-        location.href = "<%= redirectURISuccess %>";
-    };
-</script>
+    <div>
+      Redirect URI: <%= redirectURI %> 
+    </div>
+
+    <div>
+      Redirect URI Successful: <%= redirectURISuccess %> 
+    </div>
+    
+
+
 
   </body>
 </html>
