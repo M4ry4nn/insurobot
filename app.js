@@ -302,11 +302,10 @@ function receivedMessage(event) {
             var imgUrl = messageAttachments[0].payload.url;
             console.log(imgUrl);
 
-            request.post({
-                headers: {'content-type': 'application/json'},
-                url: 'https://hackzurich2016.herokuapp.com/dude',
-                body: {'url': ''+imgUrl}
-            }, function (error, response, body) {
+            request.post(
+                'https://hackzurich2016.herokuapp.com/dude',
+                {'url': JSON.stringify(imgUrl)},
+            function (error, response, body) {
                 console.log("response : "+response);
                 console.log("body :" +body);
                 sendTextMessage(senderID, body);
