@@ -291,7 +291,7 @@ function receivedMessage(event) {
 
             default:
 
-                processApiDotAiRequest(messageText);
+                processApiDotAiRequest(messageText,senderID);
 
         }
     } else if (messageAttachments) {
@@ -315,7 +315,7 @@ function receivedMessage(event) {
 }
 
 
- function processApiDotAiRequest(messageText) {
+ function processApiDotAiRequest(messageText,senderID) {
 
      var requestBot = chatbot.textRequest(messageText);
      requestBot.on('response', function (response) {
