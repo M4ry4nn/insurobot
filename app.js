@@ -312,9 +312,13 @@ function receivedMessage(event) {
                 url:'https://hackzurich2016.herokuapp.com/dude',
                 body: JSON.stringify(bodyObject)},
             function (error, response, body) {
-                console.log("response : "+response);
-                console.log("body :" +body);
-                sendTextMessage(senderID, body);
+                //sendTextMessage(senderID, body[0]);
+
+                var obj = {"REPORT-CLAIM-IMAGE": " "+ body[0]};
+
+                processApiDotAiRequest(obj,senderID);
+
+
 
                 // send pic to api.ai with contracted format
 
