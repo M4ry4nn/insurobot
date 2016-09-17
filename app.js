@@ -302,9 +302,10 @@ function receivedMessage(event) {
             var imgUrl = messageAttachments[0].payload.url;
             console.log(imgUrl);
 
-            var bodyObject = {
+            var bodyObject = [{
                 'url': imgUrl
-            };
+            }];
+            console.log("--------------------------------------------------------"+ JSON.stringify(bodyObject));
 
             request.post({
                 headers: {'content-type': 'application/json'},
