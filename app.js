@@ -8,7 +8,8 @@ const
     https = require('https'),
     request = require('request'),
     apiai = require("apiai"),
-    mongodb = require("mongodb");
+    mongodb = require("mongodb"),
+    _ = require('lodash');
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -47,7 +48,9 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
     process.exit(1);
 }
 
-var chatbot = apiai(API_AI_SCCESS_TOKEN);
+let chatbot = apiai(API_AI_SCCESS_TOKEN);
+
+let STARTER_TYPES = ["CLAIM_REPORT","EMERGENCY_AGENT", "COVERAGE_CHECK"];
 
 
 /*
@@ -308,10 +311,10 @@ function receivedMessage(event) {
             var imgUrl = messageAttachments[0].payload.url;
 
             request.post({
-                headers: {'content-type' : 'application/json'},
-                url:     'https://hackzurich2016.herokuapp.com/dude',
-                body:    "url="+ imgUrl
-            }, function(error, response, body){
+                headers: {'content-type': 'application/json'},
+                url: 'https://hackzurich2016.herokuapp.com/dude',
+                body: "url=" + imgUrl
+            }, function (error, response, body) {
                 console.log(body);
             });
         }
@@ -363,13 +366,9 @@ function receivedPostback(event) {
     // button for Structured Messages.
     var payload = event.postback.payload;
 
-    console.log("payload i got form start: " + payload);
-
     if (payload === "START_CONVERSATION") {
 
-
         sendTextMessage(senderID, "Ok, let's start");
-
         sendStarterMessage(senderID);
 
         //TODO create buttons ---> report claim , check coverage, emergency assistance, abort, (I want to get a new insurance)
@@ -380,13 +379,24 @@ function receivedPostback(event) {
 
 
     }
+    else if (_.includes(STARTER_TYPES,payload)) {
 
-    console.log("Received postback for user %d and page %d with payload '%s' " +
-        "at %d", senderID, recipientID, payload, timeOfPostback);
+        // got the postback back from the button click at the start
 
-    // When a postback is called, we'll send a message back to the sender to
-    // let them know it was successful
-    sendTextMessage(senderID, "Postback called");
+
+    }
+
+    else {
+
+        console.log("Received postback for user %d and page %d with payload '%s' " +
+            "at %d", senderID, recipientID, payload, timeOfPostback);
+
+        // When a postback is called, we'll send a message back to the sender to
+        // let them know it was successful
+        sendTextMessage(senderID, "Postback called");
+
+    }
+
 }
 
 /*
@@ -592,8 +602,6 @@ function sendButtonMessage(recipientId) {
 }
 
 
-
-
 function sendStarterMessage(recipientId) {
     var messageData = {
         recipient: {
@@ -608,7 +616,7 @@ function sendStarterMessage(recipientId) {
                     buttons: [{
                         type: "postback",
                         title: "Report a claim",
-                        payload: "EMERGENCY_AGENT"
+                        payload: "CLAIM_REPORT"
                     }, {
                         type: "postback",
                         title: "Check your coverage",
