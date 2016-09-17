@@ -290,18 +290,9 @@ function receivedMessage(event) {
                 break;
 
             default:
-                var requestBot = chatbot.textRequest(messageText);
-                requestBot.on('response', function (response) {
-                    console.log("Here you got the answer: ");
-                    console.log(response);
-                    sendTextMessage(senderID, response.result.fulfillment.speech);
-                });
 
-                requestBot.on('error', function (error) {
-                    console.log(error);
-                });
+                processApiDotAiRequest(messageText);
 
-                requestBot.end();
         }
     } else if (messageAttachments) {
         console.log(messageAttachments);
@@ -322,6 +313,24 @@ function receivedMessage(event) {
         sendTextMessage(senderID, "Message with attachment received");
     }
 }
+
+
+ function processApiDotAiRequest(messageText) {
+
+     var requestBot = chatbot.textRequest(messageText);
+     requestBot.on('response', function (response) {
+         console.log("Here you got the answer: ");
+         console.log(response);
+         sendTextMessage(senderID, response.result.fulfillment.speech);
+     });
+
+     requestBot.on('error', function (error) {
+         console.log(error);
+     });
+
+     requestBot.end();
+
+ }
 
 
 /*
@@ -383,6 +392,7 @@ function receivedPostback(event) {
 
         // got the postback back from the button click at the start
 
+        processApiDotAiRequest(payload);
 
     }
 
