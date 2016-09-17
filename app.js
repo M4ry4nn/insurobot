@@ -67,12 +67,6 @@ app.get('/webhook', function (req, res) {
 });
 
 
-app.get('/test', function (req, res) {
-    console.log("test --------------- from -------------------another --------- heroku ------------app ");
-    res.sendStatus(200);
-});
-
-
 /*
  * All callbacks for Messenger are POST-ed. They will be sent to the same
  * webhook. Be sure to subscribe your app to your page to receive callbacks
@@ -293,23 +287,33 @@ function receivedMessage(event) {
                 break;
 
             default:
-                var request = chatbot.textRequest(messageText);
-             request.on('response', function (response) {
+                var requestBot = chatbot.textRequest(messageText);
+                requestBot.on('response', function (response) {
                     console.log("Here you got the answer: ");
                     console.log(response);
                     sendTextMessage(senderID, response.result.fulfillment.speech);
                 });
 
-                request.on('error', function (error) {
+                requestBot.on('error', function (error) {
                     console.log(error);
                 });
 
-                request.end();
+                requestBot.end();
         }
     } else if (messageAttachments) {
         console.log(messageAttachments);
         if (messageAttachments[0].type === "image") {
-          //  imagereco.getTags(messageAttachments[0].payload.url);
+
+            console.log("got your imgae");
+            var imgUrl = messageAttachments[0].payload.url;
+
+            request.post({
+                headers: {'content-type' : 'application/json'},
+                url:     'https://hackzurich2016.herokuapp.com/dude',
+                body:    "url="+ imgUrl
+            }, function(error, response, body){
+                console.log(body);
+            });
         }
 
         sendTextMessage(senderID, "Message with attachment received");
@@ -358,6 +362,22 @@ function receivedPostback(event) {
     // The 'payload' param is a developer-defined field which is set in a postback
     // button for Structured Messages.
     var payload = event.postback.payload;
+
+    if (payload === "START_CONVERSATION") {
+
+
+        sendTextMessage(senderID, "Ok, let's start");
+
+
+        //TODO create buttons ---> report claim , check coverage, emergency assistance, abort, (I want to get a new insurance)
+
+
+        // TODO callback ---> {action: "report-claim, check-coverage, usw.", userdata: "adrian"};
+
+        // TODO get userdata
+
+
+    }
 
     console.log("Received postback for user %d and page %d with payload '%s' " +
         "at %d", senderID, recipientID, payload, timeOfPostback);
