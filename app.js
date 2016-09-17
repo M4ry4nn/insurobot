@@ -313,7 +313,7 @@ function receivedMessage(event) {
                 body: JSON.stringify(bodyObject)},
             function (error, response, body) {
                 console.log("--------------------------------------------------------"+body);
-                sendTextMessage(senderID, body[0].toString());
+                sendTextMessage(senderID, JSON.stringify(body[0]));
 
                 var obj = {"REPORT-CLAIM-IMAGE": body[0]};
                 console.log("-------------------------------------------------------OBJ"+obj);
