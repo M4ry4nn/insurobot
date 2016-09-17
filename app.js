@@ -8,7 +8,6 @@ const
     https = require('https'),
     request = require('request'),
     apiai = require("apiai"),
-    test = require("./module/test"),
     imagereco = require("./module/imagereco"),
     mongodb = require("mongodb");
 
