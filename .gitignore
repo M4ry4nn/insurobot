@@ -7,4 +7,3 @@ node_modules
 *.dat
 .idea
 *.iml
-config/default.json
