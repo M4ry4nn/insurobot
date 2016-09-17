@@ -6,11 +6,10 @@ const
     crypto = require('crypto'),
     express = require('express'),
     https = require('https'),
-    request = require('request'),
+    request = require('sync-request'),
     apiai = require("apiai"),
     mongodb = require("mongodb"),
-    _ = require('lodash'),
-    async = require('async');
+    _ = require('lodash');
 
 
 var app = express();
@@ -375,18 +374,12 @@ function receivedPostback(event) {
 
     }
     else if (_.includes(PAYMENT_OPTIONS, payload)) {
-        async.waterfall([
-            function (callback) {
-                sendReceiptMessage(senderID);
+        sendReceiptMessage(senderID).then(function (result) {
+            sendTextMessage(senderID, "Payment completed! That was simple, wasn't it?");
+        }).then(function (result) {
+            sendTextMessage(senderID, "If you need anything else just text me :)");
+        });
 
-            },
-            function (callback) {
-                sendTextMessage(senderID, "Payment completed! That was simple, wasn't it?");
-
-            },
-            function (callback) {
-                sendTextMessage(senderID, "If you need anything else just text me :)");
-            }]);
     }
 
     else if (_.includes(OFFER_TYPES, payload)) {
