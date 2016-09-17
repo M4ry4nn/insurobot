@@ -302,9 +302,9 @@ function receivedMessage(event) {
             var imgUrl = messageAttachments[0].payload.url;
             console.log(imgUrl);
 
-            var bodyObject = [{
+            var bodyObject = {
                 'url': imgUrl
-            }];
+            };
             console.log("--------------------------------------------------------"+ JSON.stringify(bodyObject));
 
             request.post({
@@ -315,6 +315,9 @@ function receivedMessage(event) {
                 console.log("response : "+response);
                 console.log("body :" +body);
                 sendTextMessage(senderID, body);
+
+                // send pic to api.ai with contracted format
+
             });
         }
 
@@ -400,8 +403,16 @@ function receivedPostback(event) {
 
         // got the postback back from the button click at the start
 
-        processApiDotAiRequest(payload,senderID);
-        console.log("-------------------------------------------------starter postback ----------------------------------------------");
+        if (payload === STARTER_TYPES[0]) {
+            sendTextMessage(senderID, "Ok, how would you like to describe your claim?");
+            sendInputChooseMessage(senderID);
+
+        }
+
+    }
+
+    else if(payload === "IMAGE_INPUT") {
+        sendTextMessage(senderID, "ok, just send me a picture of the damaged object.");
 
     }
 
@@ -653,6 +664,36 @@ function sendStarterMessage(recipientId) {
     callSendAPI(messageData);
 }
 
+
+
+function sendInputChooseMessage(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Input channel",
+                    buttons: [{
+                        type: "postback",
+                        title: "Image",
+                        payload: "IMAGE_INPUT"
+                    }, {
+                        type: "postback",
+                        title: "Text",
+                        payload: "TEXT_INPUT"
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
 /*
  * Send a Structured Message (Generic Message type) using the Send API.
  *
@@ -668,22 +709,22 @@ function sendGenericMessage(recipientId) {
                 payload: {
                     template_type: "generic",
                     elements: [{
-                        title: "rift",
-                        subtitle: "Next-generation virtual reality",
+                        title: "Standart",
+                        subtitle: "basic coverage",
                         item_url: "https://www.oculus.com/en-us/rift/",
                         image_url: SERVER_URL + "/assets/rift.png",
                         buttons: [{
                             type: "web_url",
                             url: "https://www.oculus.com/en-us/rift/",
-                            title: "Open Web URL"
+                            title: "get more informations"
                         }, {
                             type: "postback",
-                            title: "Call Postback",
+                            title: "Buy it",
                             payload: "Payload for first bubble",
                         }],
                     }, {
-                        title: "touch",
-                        subtitle: "Your Hands, Now in VR",
+                        title: "Premium",
+                        subtitle: "additional support in case of a claim",
                         item_url: "https://www.oculus.com/en-us/touch/",
                         image_url: SERVER_URL + "/assets/touch.png",
                         buttons: [{
@@ -692,8 +733,8 @@ function sendGenericMessage(recipientId) {
                             title: "Open Web URL"
                         }, {
                             type: "postback",
-                            title: "Call Postback",
-                            payload: "Payload for second bubble",
+                            title: "Buy it",
+                            payload: "get more informations",
                         }]
                     }]
                 }
@@ -721,20 +762,20 @@ function sendReceiptMessage(recipientId) {
                 type: "template",
                 payload: {
                     template_type: "receipt",
-                    recipient_name: "Peter Chang",
+                    recipient_name: "Peter Chang", //TODO add usersername here
                     order_number: receiptId,
                     currency: "USD",
                     payment_method: "Visa 1234",
                     timestamp: "1428444852",
                     elements: [{
-                        title: "Oculus Rift",
+                        title: "Insurance payment for 12 month",
                         subtitle: "Includes: headset, sensor, remote",
                         quantity: 1,
                         price: 599.00,
                         currency: "USD",
                         image_url: SERVER_URL + "/assets/riftsq.png"
                     }, {
-                        title: "Samsung Gear VR",
+                        title: "Insurance payment for 12 month",
                         subtitle: "Frost White",
                         quantity: 1,
                         price: 99.99,
@@ -742,12 +783,12 @@ function sendReceiptMessage(recipientId) {
                         image_url: SERVER_URL + "/assets/gearvrsq.png"
                     }],
                     address: {
-                        street_1: "1 Hacker Way",
+                        street_1: "Technoparkstrasse 1",
                         street_2: "",
-                        city: "Menlo Park",
-                        postal_code: "94025",
-                        state: "CA",
-                        country: "US"
+                        city: "Zurich",
+                        postal_code: "8005",
+                        state: "ZH",
+                        country: "CH"
                     },
                     summary: {
                         subtotal: 698.99,
