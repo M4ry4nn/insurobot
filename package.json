@@ -15,6 +15,7 @@
   "author": "Otolana",
   "dependencies": {
     "apiai": "^2.0.7",
+    "async": "^2.0.1",
     "body-parser": "^1.15.0",
     "clarifai": "^1.2.1",
     "config": "^1.20.4",

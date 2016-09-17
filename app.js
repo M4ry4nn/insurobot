@@ -9,7 +9,9 @@ const
     request = require('request'),
     apiai = require("apiai"),
     mongodb = require("mongodb"),
-    _ = require('lodash');
+    _ = require('lodash'),
+    async = require('async');
+
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -373,12 +375,18 @@ function receivedPostback(event) {
 
     }
     else if (_.includes(PAYMENT_OPTIONS, payload)) {
-        sendReceiptMessage(senderID).then(function (result) {
-            sendTextMessage(senderID, "Payment completed! That was simple, wasn't it?");
-        }).then(function (result) {
-            sendTextMessage(senderID, "If you need anything else just text me :)");
-        });
+        async.waterfall([
+            function (callback) {
+                sendReceiptMessage(senderID);
 
+            },
+            function (callback) {
+                sendTextMessage(senderID, "Payment completed! That was simple, wasn't it?");
+
+            },
+            function (callback) {
+                sendTextMessage(senderID, "If you need anything else just text me :)");
+            }]);
     }
 
     else if (_.includes(OFFER_TYPES, payload)) {
@@ -552,7 +560,7 @@ function sendTextMessage(recipientId, messageText) {
         }
     };
 
-    return callSendAPI(messageData);
+    callSendAPI(messageData);
 }
 
 /*
@@ -810,7 +818,7 @@ function sendReceiptMessage(recipientId) {
         }
     };
 
-    return callSendAPI(messageData);
+    callSendAPI(messageData);
 }
 
 /*
