@@ -51,13 +51,10 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 let chatbot = apiai(API_AI_SCCESS_TOKEN);
 
 let STARTER_TYPES = ["CLAIM_REPORT","EMERGENCY_AGENT", "COVERAGE_CHECK"];
+let OFFER_TYPES = ["BUY_INSURANCE_1","BUY_INSURANCE_2", "BUY_INSURANCE_3"];
+let PAYMENT_OPTIONS = ["PAYMENT_YES","PAYMENT_NO"];
 
 
-/*
- * Use your own validation token. Check that the token used in the Webhook 
- * setup is the same token used here.
- *
- */
 app.get('/webhook', function (req, res) {
     if (req.query['hub.mode'] === 'subscribe' &&
         req.query['hub.verify_token'] === VALIDATION_TOKEN) {
@@ -70,13 +67,7 @@ app.get('/webhook', function (req, res) {
 });
 
 
-/*
- * All callbacks for Messenger are POST-ed. They will be sent to the same
- * webhook. Be sure to subscribe your app to your page to receive callbacks
- * for your page. 
- * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
- *
- */
+
 app.post('/webhook', function (req, res) {
     var data = req.body;
 
@@ -116,14 +107,7 @@ app.post('/webhook', function (req, res) {
     }
 });
 
-/*
- * Verify that the callback came from Facebook. Using the App Secret from 
- * the App Dashboard, we can verify the signature that is sent with each 
- * callback in the x-hub-signature field, located in the header.
- *
- * https://developers.facebook.com/docs/graph-api/webhooks#setup
- *
- */
+
 function verifyRequestSignature(req, res, buf) {
     var signature = req.headers["x-hub-signature"];
 
@@ -146,14 +130,6 @@ function verifyRequestSignature(req, res, buf) {
     }
 }
 
-/*
- * Authorization Event
- *
- * The value for 'optin.ref' is defined in the entry point. For the "Send to 
- * Messenger" plugin, it is the 'data-ref' field. Read more at 
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/authentication
- *
- */
 function receivedAuthentication(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
@@ -175,20 +151,7 @@ function receivedAuthentication(event) {
     sendTextMessage(senderID, "Authentication successful");
 }
 
-/*
- * Message Event
- *
- * This event is called when a message is sent to your page. The 'message' 
- * object format can vary depending on the kind of message that was received.
- * Read more at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-received
- *
- * For this example, we're going to echo any text that we get. If we get some 
- * special keywords ('button', 'generic', 'receipt'), then we'll send back
- * examples of those bubbles to illustrate the special message bubbles we've 
- * created. If we receive a message with an attachment (image, video, audio), 
- * then we'll simply confirm that we've received the attachment.
- * 
- */
+
 function receivedMessage(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
@@ -364,13 +327,6 @@ function receivedMessage(event) {
  }
 
 
-/*
- * Delivery Confirmation Event
- *
- * This event is sent to confirm the delivery of a message. Read more about 
- * these fields at https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-delivered
- *
- */
 function receivedDeliveryConfirmation(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
@@ -390,13 +346,6 @@ function receivedDeliveryConfirmation(event) {
 }
 
 
-/*
- * Postback Event
- *
- * This event is called when a postback is tapped on a Structured Message. 
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/postback-received
- * 
- */
 function receivedPostback(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
@@ -410,8 +359,6 @@ function receivedPostback(event) {
 
         sendTextMessage(senderID, "Ok, let's start");
         sendStarterMessage(senderID);
-
-        //TODO create buttons ---> report claim , check coverage, emergency assistance, abort, (I want to get a new insurance)
 
         // TODO callback ---> {action: "report-claim, check-coverage, usw.", userdata: "adrian"};
 
@@ -429,6 +376,13 @@ function receivedPostback(event) {
 
         }
 
+    }
+    else if (_.includes(PAYMENT_OPTIONS,payload)) {
+        sendReceiptMessage(senderID);
+    }
+
+    else if (_.includes(OFFER_TYPES,payload)) {
+        sendPaymentDataButton(senderID);
     }
 
     else if(payload === "IMAGE_INPUT") {
@@ -449,13 +403,6 @@ function receivedPostback(event) {
 
 }
 
-/*
- * Message Read Event
- *
- * This event is called when a previously-sent message has been read.
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
- * 
- */
 function receivedMessageRead(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
@@ -468,14 +415,7 @@ function receivedMessageRead(event) {
         "number %d", watermark, sequenceNumber);
 }
 
-/*
- * Account Link Event
- *
- * This event is called when the Link Account or UnLink Account action has been
- * tapped.
- * https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
- * 
- */
+
 function receivedAccountLink(event) {
     var senderID = event.sender.id;
     var recipientID = event.recipient.id;
@@ -651,6 +591,34 @@ function sendButtonMessage(recipientId) {
     callSendAPI(messageData);
 }
 
+function sendPaymentDataButton(recipientId) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: "Are you sure you want to complete the payment?",
+                    buttons: [{
+                        type: "postback",
+                        title: "Just do it!",
+                        payload: "PAYMENT_YES"
+                    }, {
+                        type: "postback",
+                        title: "No, forget it! Cancel the transaction!",
+                        payload: "PAYMENT_NO"
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
 
 function sendStarterMessage(recipientId) {
     var messageData = {
@@ -741,7 +709,7 @@ function sendGenericMessage(recipientId) {
                             }, {
                                 type: "postback",
                                 title: "Buy it", //TODO 3 bullets with coverage, price
-                                payload: "Payload for first bubble",
+                                payload: "BUY_INSURANCE_3",
                             }],
                         },{
                         title: "Standard",
@@ -755,7 +723,7 @@ function sendGenericMessage(recipientId) {
                         }, {
                             type: "postback",
                             title: "Buy it",
-                            payload: "Payload for first bubble",
+                            payload: "BUY_INSURANCE_2",
                         }],
                     }, {
                         title: "Premium",
@@ -769,7 +737,7 @@ function sendGenericMessage(recipientId) {
                         }, {
                             type: "postback",
                             title: "Buy it",
-                            payload: "get more informations",
+                            payload: "BUY_INSURANCE_1",
                         }]
                     }]
                 }
