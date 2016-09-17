@@ -380,6 +380,11 @@ function receivedPostback(event) {
         var millisecondsToWait = 1000;
         setTimeout(function () {
             sendTextMessage(senderID, "Payment completed! That was simple, wasn't it?");
+
+
+        }, millisecondsToWait);
+
+        setTimeout(function () {
             sendTextMessage(senderID, "If you need anything else just text me :)");
 
         }, millisecondsToWait);
