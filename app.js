@@ -309,6 +309,7 @@ function receivedMessage(event) {
             }, function (error, response, body) {
                 console.log("response : "+response);
                 console.log("body :" +body);
+                sendTextMessage(senderID, body);
             });
         }
 
