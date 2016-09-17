@@ -1,8 +1,8 @@
 {
     "appSecret": "fa53ad0c7d45684c5ecf35c74224f4c3",
-    "pageAccessToken": "EAAJm7NCqBI4BAPhZCaZCbFojsEqTcwYMeM14Rf8qRuiTIUq1dUrG5IklEl8sifwQZAo2jeSGwNEPlmnNrWbEJs00pSKJJGOsS2pa3BNBd2EEZBCIPIMly60IMReLsbfQHx1S7NxKyn0UlY9sejPcD1J6w4X0FTnv8I5OrnblkQZDZD",
+    "pageAccessToken": "EAAJm7NCqBI4BADtdqMDDJAKI00tU7ccpQaTZAuSIYGEKhc0s1nVLwvSHN6ShSAn7a7TqUUVZCO7i3NYIiiqgowpqZA1y2MsQLDDGn4LKPN8ZBrZBYCna8G0f8jEQia5ZAUGZAqZCOAw0egp6JEZCkbRhowXXe4O3pIocQXMOS24syggZDZD",
     "validationToken": "test123",
-    "serverURL": "https://protected-oasis-82647.herokuapp.com/",
+    "serverURL": "https://protected-oasis-82647.herokuapp.com",
     "apiAiAccessToken": "9dd44a761a164adfa6d86efac06431b3",
     "clarifaiClientId": "G_BFKEIjBYBUjVd4VakYNqs6QUSs6cRIsN1gcL-1",
     "clarifaiClientSecret":"uVDD_2nGDAI9gpj_7ga_ZbLOqovE-kcYFuPkJ1f1"
