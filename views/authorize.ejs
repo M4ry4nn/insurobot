@@ -19,8 +19,15 @@
       Password:<br>
       <input type="password" name="password" value="Mouse">
       <br>
-      <button class="float-left submit-button" onclick="window.href = '<%= redirectURISuccess %>'>login</button>
+      <button class="float-left submit-button" onclick="window.href ='<%= redirectURISuccess %>'>login</button>
 
+<button id="myButton" class="float-left submit-button" >Home</button>
+
+<script type="text/javascript">
+    document.getElementById("myButton").onclick = function () {
+        location.href = "<%= redirectURISuccess %>";
+    };
+</script>
 
   </body>
 </html>
