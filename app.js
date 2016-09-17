@@ -612,15 +612,34 @@ function sendPaymentDataButton(recipientId) {
                 payload: {
                     template_type: "button",
                     text: "Are you sure you want to complete the payment?",
-                    buttons: [{
-                        type: "postback",
-                        title: "Yes!",
-                        payload: "PAYMENT_YES"
-                    }, {
-                        type: "postback",
-                        title: "No, cancel it!",
-                        payload: "PAYMENT_NO"
-                    }]
+                    "buttons":[
+                        {
+                            "type":"payment",
+                            "title":"buy",
+                            "payload":"DEVELOPER_DEFINED_PAYLOAD",
+                            "payment_summary":{
+                                "currency":"USD",
+                                "payment_type":"FIXED_AMOUNT",
+                                "merchant_name":"Basic insurance",
+                                "requested_user_info":[
+                                    "shipping_address",
+                                    "contact_name",
+                                    "contact_phone",
+                                    "contact_email"
+                                ],
+                                "price_list":[
+                                    {
+                                        "label":"Subtotal",
+                                        "amount":"29.99"
+                                    },
+                                    {
+                                        "label":"Taxes",
+                                        "amount":"2.47"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 }
             }
         }
@@ -774,7 +793,7 @@ function sendReceiptMessage(recipientId) {
                 type: "template",
                 payload: {
                     template_type: "receipt",
-                    recipient_name: "Peter Chang", //TODO add usersername here
+                    recipient_name: "Adrian Krebs", //TODO add usersername here
                     order_number: receiptId,
                     currency: "USD",
                     payment_method: "Visa 1234",
@@ -785,14 +804,14 @@ function sendReceiptMessage(recipientId) {
                         quantity: 1,
                         price: 599.00,
                         currency: "USD",
-                        image_url: SERVER_URL + "/assets/riftsq.png"
+                        image_url: SERVER_URL + "/assets/1dollar.png"
                     }, {
                         title: "Customer participation",
                         subtitle: "basic",
                         quantity: 1,
                         price: 99.99,
                         currency: "USD",
-                        image_url: SERVER_URL + "/assets/gearvrsq.png"
+                        image_url: SERVER_URL + "/assets/1dollar.png"
                     }],
                     address: {
                         street_1: "Technoparkstrasse 1",
