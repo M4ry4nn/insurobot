@@ -309,7 +309,7 @@ function receivedMessage(event) {
             request.post({
                 headers: {'content-type': 'application/json'},
                 url:'https://hackzurich2016.herokuapp.com/dude',
-                body: JSON.stringify(imgUrl)},
+                body: JSON.stringify(bodyObject)},
             function (error, response, body) {
                 console.log("response : "+response);
                 console.log("body :" +body);
