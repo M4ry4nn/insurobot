@@ -8,7 +8,7 @@ const
     https = require('https'),
     request = require('request'),
     apiai = require("apiai"),
-    imagereco = require("./module/imagereco"),
+    //imagereco = require("./module/imagereco"),
     mongodb = require("mongodb");
 
 var app = express();
@@ -311,7 +311,7 @@ function receivedMessage(event) {
     } else if (messageAttachments) {
         console.log(messageAttachments);
         if (messageAttachments[0].type === "image") {
-            imagereco.getTags(messageAttachments[0].payload.url);
+          //  imagereco.getTags(messageAttachments[0].payload.url);
         }
 
         sendTextMessage(senderID, "Message with attachment received");
