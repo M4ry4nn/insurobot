@@ -936,6 +936,25 @@ function sendAccountLinking(recipientId) {
     callSendAPI(messageData);
 }
 
+
+app.get('/authorize', function (req, res) {
+    var accountLinkingToken = req.query['account_linking_token'];
+    var redirectURI = req.query['redirect_uri'];
+
+    // Authorization Code should be generated per user by the developer. This will
+    // be passed to the Account Linking callback.
+    var authCode = "1234567890";
+
+    // Redirect users to this URI on successful login
+    var redirectURISuccess = redirectURI + "&authorization_code=" + authCode;
+
+    res.render('authorize', {
+        accountLinkingToken: accountLinkingToken,
+        redirectURI: redirectURI,
+        redirectURISuccess: redirectURISuccess
+    });
+});
+
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll 
  * get the message id in a response 
