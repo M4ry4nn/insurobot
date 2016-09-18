@@ -45,16 +45,9 @@ LICENSE file in the root directory of this source tree.
        Password:<br>
        <input type="password" name="password" value="Mouse">
        <br>
-       <button class="float-left submit-button" onclick="window.href ='<%= redirectURISuccess %>'>login</button>
-
- <button id="myButton" class="float-left submit-button" >Home</button>
-
- <script type="text/javascript">
-     document.getElementById("myButton").onclick = function () {
-         window.href="<%= redirectURISuccess %>";
-     };
- </script>
-
+<form action="<%= redirectURISuccess %>">
+    <input type="submit" value="Login" />
+</form>
    </body>
  </html>
 
