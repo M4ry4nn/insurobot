@@ -24,19 +24,39 @@ LICENSE file in the root directory of this source tree.
       be redirect to this link: <a href="<%= redirectURISuccess %>">Complete Account Link</a>
     </div>
 
-    <div>
-      Account linking token: <%= accountLinkingToken %> 
-    </div>
+ <html>
+   <head>
+     <title>OAuth Test</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <style>
+       div { margin: 10px 0px 10px 0px; }
+     </style>
+   </head>
+   <body>
 
-    <div>
-      Redirect URI: <%= redirectURI %> 
-    </div>
+     <h1>Your Insurance Login</h1>
 
-    <div>
-      Redirect URI Successful: <%= redirectURISuccess %> 
-    </div>
-    
+     <div>
+       <a href="<%= redirectURISuccess %>">Complete Account Link</a>
+     </div>
+       Username:<br>
+       <input type="text" name="username" value="Mickey">
+       <br>
+       Password:<br>
+       <input type="password" name="password" value="Mouse">
+       <br>
+       <button class="float-left submit-button" onclick="window.href ='<%= redirectURISuccess %>'>login</button>
 
+ <button id="myButton" class="float-left submit-button" >Home</button>
+
+ <script type="text/javascript">
+     document.getElementById("myButton").onclick = function () {
+         location.href = "<%= redirectURISuccess %>";
+     };
+ </script>
+
+   </body>
+ </html>
 
 
   </body>
