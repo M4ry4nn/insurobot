@@ -387,7 +387,7 @@ function receivedPostback(event) {
         setTimeout(function () {
             sendTextMessage(senderID, "If you need anything else just text me :)");
 
-        }, millisecondsToWait);
+        }, 1500);
 
     }
 
