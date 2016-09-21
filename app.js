@@ -356,6 +356,7 @@ function receivedPostback(event) {
     if (payload === "START_CONVERSATION") {
 
         sendTextMessage(senderID, "Ok, let's start.");
+        console.log("------------------------------------------------------- send buttons----------------------------");
         sendStarterMessage(senderID);
 
         // TODO callback ---> {action: "report-claim, check-coverage, usw.", userdata: "adrian"};
