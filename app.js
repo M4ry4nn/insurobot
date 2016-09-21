@@ -52,7 +52,7 @@ if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 
 let chatbot = apiai(API_AI_SCCESS_TOKEN);
 
-let STARTER_TYPES = ["CLAIM_REPORT", "EMERGENCY_AGENT", "COVERAGE_CHECK"];
+let STARTER_TYPES = ["CLAIM_REPORT", "EMERGENCY_AGENT", "COVERAGE_CHECK", "ACHIEVEMENTS"];
 let OFFER_TYPES = ["BUY_INSURANCE_1", "BUY_INSURANCE_2", "BUY_INSURANCE_3"];
 let PAYMENT_OPTIONS = ["PAYMENT_YES", "PAYMENT_NO"];
 
@@ -371,6 +371,11 @@ function receivedPostback(event) {
         if (payload === STARTER_TYPES[0]) {
             sendInputChooseMessage(senderID);
 
+        } else if (payload === STARTER_TYPES[3]) {
+            sendTextMessage(senderID,"We're gonna place some gamification elements here like: check your window wipers or fire extinguisher and collect points");
+            sendGifMessage(senderID);
+
+
         }
 
     }
@@ -472,7 +477,7 @@ function sendGifMessage(recipientId) {
             attachment: {
                 type: "image",
                 payload: {
-                    url: SERVER_URL + "/assets/test.gif"
+                    url: SERVER_URL + "/assets/giphy.gif"
                 }
             }
         }
@@ -653,6 +658,10 @@ function sendStarterMessage(recipientId) {
                         type: "postback",
                         title: "Emergency assistance",
                         payload: "EMERGENCY_AGENT"
+                    }, {
+                        type: "postback",
+                        title: "Achievements",
+                        payload: "ACHIEVEMENTS"
                     }]
                 }
             }
