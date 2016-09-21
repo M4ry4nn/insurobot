@@ -652,16 +652,12 @@ function sendStarterMessage(recipientId) {
                         payload: "CLAIM_REPORT"
                     }, {
                         type: "postback",
-                        title: "Check your coverage",
-                        payload: "COVERAGE_CHECK"
+                        title: "Achievements",
+                        payload: "ACHIEVEMENTS"
                     }, {
                         type: "postback",
                         title: "Emergency assistance",
                         payload: "EMERGENCY_AGENT"
-                    }, {
-                        type: "postback",
-                        title: "Achievements",
-                        payload: "ACHIEVEMENTS"
                     }]
                 }
             }
