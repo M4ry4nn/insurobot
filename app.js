@@ -659,10 +659,6 @@ function sendStarterMessage(recipientId) {
                         type: "postback",
                         title: "Emergency assistance",
                         payload: "EMERGENCY_AGENT"
-                    }, {
-                        type: "postback",
-                        title: "Achievements",
-                        payload: "ACHIEVEMENTS"
                     }]
                 }
             }
