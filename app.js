@@ -664,8 +664,8 @@ function sendStarterMessage(recipientId) {
             }
         }
     };
-
     callSendAPI(messageData);
+    console.log("------------------------Sent buttons");
 }
 
 
@@ -981,6 +981,7 @@ function callSendAPI(messageData) {
             if (messageId) {
                 console.log("Successfully sent message with id %s to recipient %s",
                     messageId, recipientId);
+                console.log(messageData);
             } else {
                 console.log("Successfully called Send API for recipient %s",
                     recipientId);
