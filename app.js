@@ -356,7 +356,6 @@ function receivedPostback(event) {
     if (payload === "START_CONVERSATION") {
 
         sendTextMessage(senderID, "Ok, let's start.");
-        console.log("------------------------------------------------------- send buttons----------------------------");
         sendStarterMessage(senderID);
 
         // TODO callback ---> {action: "report-claim, check-coverage, usw.", userdata: "adrian"};
@@ -373,7 +372,7 @@ function receivedPostback(event) {
             sendInputChooseMessage(senderID);
 
         } else if (payload === STARTER_TYPES[3]) {
-            sendTextMessage(senderID,"We're gonna place some gamification elements here like: check your window wipers or fire extinguisher and collect points");
+            sendTextMessage(senderID, "We're gonna place some gamification elements here like: check your window wipers or fire extinguisher and collect points");
             sendGifMessage(senderID);
 
 
@@ -659,6 +658,10 @@ function sendStarterMessage(recipientId) {
                         type: "postback",
                         title: "Emergency assistance",
                         payload: "EMERGENCY_AGENT"
+                    }, {
+                        type: "postback",
+                        title: "Achievements",
+                        payload: "ACHIEVEMENTS"
                     }]
                 }
             }
