@@ -291,8 +291,13 @@ function receivedMessage(event) {
             //         console.log("-------------------------------------------------------OBJ" + obj);
 
                   //  processApiDotAiRequest(JSON.stringify(obj), senderID);
+            var millisecondsToWait = 1500;
+            setTimeout(function () {
+                sendTextMessage(senderID,"The image contains an animal. Is this correct?")
 
-                    sendTextMessage(senderID,"The image contains an animal. Is this correct?")
+
+            }, millisecondsToWait);
+
 
                     // send pic to api.ai with contracted format
 
