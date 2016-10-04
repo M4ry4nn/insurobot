@@ -291,7 +291,7 @@ function receivedMessage(event) {
             //         console.log("-------------------------------------------------------OBJ" + obj);
 
                   //  processApiDotAiRequest(JSON.stringify(obj), senderID);
-            var millisecondsToWait = 1500;
+            var millisecondsToWait = 2500;
             setTimeout(function () {
                 sendTextMessage(senderID,"The image contains an animal. Is this correct?")
 
