@@ -260,9 +260,10 @@ function receivedMessage(event) {
                 } else if (messageText.includes("yes") || messageText.includes("please")) {
                     sendTextMessage(senderID,"Ok, here are some special offerings just for you :D");
                     sendGenericMessage(senderID);
+                } else {
+                    processApiDotAiRequest(messageText, senderID);
                 }
 
-               // processApiDotAiRequest(messageText, senderID);
 
         }
     } else if (messageAttachments) {
