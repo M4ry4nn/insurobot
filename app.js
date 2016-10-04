@@ -255,14 +255,21 @@ function receivedMessage(event) {
 
             default:
 
-                processApiDotAiRequest(messageText, senderID);
+                if (messageText === "correct") {
+                    sendTextMessage(senderID,"I am sorry. Your currenct insurance does not cover objects of type animals. May I offer you a coverage upgrade for future incidents?");
+                } else if (messageText.includes("yes") || messageText.includes("please")) {
+                    sendTextMessage(senderID,"Ok, here are some special offerings just for you :D");
+                    sendGenericMessage(senderID);
+                }
+
+               // processApiDotAiRequest(messageText, senderID);
 
         }
     } else if (messageAttachments) {
         console.log(messageAttachments);
         if (messageAttachments[0].type === "image") {
 
-            console.log("got your imgae");
+            console.log("got your image");
             var imgUrl = messageAttachments[0].payload.url;
             console.log(imgUrl);
 
@@ -271,24 +278,25 @@ function receivedMessage(event) {
             };
             console.log("--------------------------------------------------------" + JSON.stringify(bodyObject));
 
-            request.post({
-                    headers: {'content-type': 'application/json'},
-                    url: 'https://hackzurich2016.herokuapp.com/dude',
-                    body: JSON.stringify(bodyObject)
-                },
-                function (error, response, body) {
-                    console.log("--------------------------------------------------------" + body);
-                    var arr = JSON.parse(body);
+            // request.post({
+            //         headers: {'content-type': 'application/json'},
+            //         url: 'https://hackzurich2016.herokuapp.com/dude',
+            //         body: JSON.stringify(bodyObject)
+            //     },
+            //     function (error, response, body) {
+            //         console.log("--------------------------------------------------------" + body);
+            //         var arr = JSON.parse(body);
+            //
+            //         var obj = {"REPORT-CLAIM-IMAGE": arr[0]};
+            //         console.log("-------------------------------------------------------OBJ" + obj);
 
-                    var obj = {"REPORT-CLAIM-IMAGE": arr[0]};
-                    console.log("-------------------------------------------------------OBJ" + obj);
+                  //  processApiDotAiRequest(JSON.stringify(obj), senderID);
 
-                    processApiDotAiRequest(JSON.stringify(obj), senderID);
-
+                    sendTextMessage(senderID,"The image contains an animal. Is this correct?")
 
                     // send pic to api.ai with contracted format
 
-                });
+              //  });
         }
 
     }
@@ -315,11 +323,11 @@ function processApiDotAiRequest(messageText, senderID) {
 
 function checkForOfferResponse(response, senderID) {
 
-    if (response.result.metadata.intentName === "insurance.coverage.upgrade-yes") {
+    // if (response.result.metadata.intentName === "insurance.coverage.upgrade-yes") {
 
         sendGenericMessage(senderID);
 
-    }
+    // }
 
 
 }
@@ -652,7 +660,7 @@ function sendStarterMessage(recipientId) {
                     text: "How can I help you?",
                     buttons: [{
                         type: "postback",
-                        title: "Report a claim",
+                        title: "Check coverage",
                         payload: "CLAIM_REPORT"
                     }, {
                         type: "postback",
@@ -682,7 +690,7 @@ function sendInputChooseMessage(recipientId) {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: "Ok, how would you like to describe your claim?",
+                    text: "Ok, just send me an image or a text description of the object you want to check coverage for",
                     buttons: [{
                         type: "postback",
                         title: "Image",
