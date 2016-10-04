@@ -356,6 +356,7 @@ function receivedPostback(event) {
     if (payload === "START_CONVERSATION") {
 
         sendTextMessage(senderID, "Ok, let's start.");
+
         sendStarterMessage(senderID);
 
         // TODO callback ---> {action: "report-claim, check-coverage, usw.", userdata: "adrian"};
@@ -928,7 +929,7 @@ function sendAccountLinking(recipientId) {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: "Welcome. Link your account.",
+                    text: "Sign in to your insurance account, so I can get your contracts and insurance policies",
                     buttons: [{
                         type: "account_link",
                         url: SERVER_URL + "/authorize"
