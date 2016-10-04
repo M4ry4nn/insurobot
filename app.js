@@ -357,7 +357,8 @@ function receivedPostback(event) {
 
         sendTextMessage(senderID, "Ok, let's start.");
 
-        sendStarterMessage(senderID);
+        sendAccountLinking(senderID);
+
 
         // TODO callback ---> {action: "report-claim, check-coverage, usw.", userdata: "adrian"};
 
@@ -441,6 +442,8 @@ function receivedAccountLink(event) {
 
     console.log("Received account link event with for user %d with status %s " +
         "and auth code %s ", senderID, status, authCode);
+
+    sendStarterMessage(senderID);
 }
 
 /*
