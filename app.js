@@ -1015,7 +1015,8 @@ app.get('/authorize', function (req, res) {
 
 
 app.get('/alarm', function (req, res) {
-    sendTextMessage(SENDER_ID_GLOBAL,"Hei, it's me again :) The weather forecast says it will hail around Bern today. Please bring your car to a protected place")
+    console.log("sending alarm -----------------------------------------------------");
+    sendTextMessage(SENDER_ID_GLOBAL,"Hei, it's me again :) The weather forecast says it will hail around Bern today. Please bring your car to a protected place");
 });
 
 /*
