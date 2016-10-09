@@ -10,7 +10,8 @@ const
     apiai = require("apiai"),
     mongodb = require("mongodb"),
     _ = require('lodash'),
-    async = require('async');
+    async = require('async'),
+    imagereco = require("./module/imagereco");
 
 
 var app = express();
@@ -55,7 +56,7 @@ let chatbot = apiai(API_AI_SCCESS_TOKEN);
 let STARTER_TYPES = ["CLAIM_REPORT", "EMERGENCY_AGENT", "COVERAGE_CHECK", "ACHIEVEMENTS"];
 let OFFER_TYPES = ["BUY_INSURANCE_1", "BUY_INSURANCE_2", "BUY_INSURANCE_3"];
 let PAYMENT_OPTIONS = ["PAYMENT_YES", "PAYMENT_NO"];
-
+let TAGS = ["animal", "jewelery", "car"];
 
 app.get('/webhook', function (req, res) {
     if (req.query['hub.mode'] === 'subscribe' &&
@@ -197,9 +198,6 @@ function receivedMessage(event) {
 
     if (messageText) {
 
-        // If we receive a text message, check to see if it matches any special
-        // keywords and send back the corresponding example. Otherwise, just echo
-        // the text we received.
         switch (messageText) {
             case 'image':
                 sendImageMessage(senderID);
@@ -255,17 +253,17 @@ function receivedMessage(event) {
 
             default:
 
-                if (messageText === "correct") {
-                    sendTextMessage(senderID,"I am sorry. Your currenct insurance does not cover objects of type animals. May I offer you a coverage upgrade for future incidents?");
-                } else if (messageText.includes("yes") || messageText.includes("please")) {
-                    sendTextMessage(senderID,"Ok, here are some special offerings just for you :D");
-                    sendGenericMessage(senderID);
+                if (_.includes(["correct", "yes", "perfect"], messageText)) {
+                    sendYesOrNo(senderID, "I am sorry. Your currenct insurance does not cover objects of this type. May I offer you a coverage upgrade for future incidents?");
                 } else {
-                    processApiDotAiRequest(messageText, senderID);
+                   // processApiDotAiRequest(messageText, senderID);
+
                 }
 
-
         }
+        // If we receive a text message, check to see if it matches any special
+        // keywords and send back the corresponding example. Otherwise, just echo
+        // the text we received.
     } else if (messageAttachments) {
         console.log(messageAttachments);
         if (messageAttachments[0].type === "image") {
@@ -291,18 +289,22 @@ function receivedMessage(event) {
             //         var obj = {"REPORT-CLAIM-IMAGE": arr[0]};
             //         console.log("-------------------------------------------------------OBJ" + obj);
 
-                  //  processApiDotAiRequest(JSON.stringify(obj), senderID);
-            var millisecondsToWait = 4000;
-            setTimeout(function () {
-                sendTextMessage(senderID,"The image contains an animal. Is this correct?")
+            //  processApiDotAiRequest(JSON.stringify(obj), senderID);
+
+            if (messageAttachments[0].type === "image") {
+                imagereco.getTags(messageAttachments[0].payload.url).then(function (result) {
+                    console.log(result.results[0].result.tag.classes);
+                    var match = _.find(result.results[0].result.tag.classes, function (tag) {
+                        return _.includes(TAGS, tag);
+                    });
+                    sendTextMessage(senderID, "The image contains a " + match + ". Is this correct?");
+                });
+            }
 
 
-            }, millisecondsToWait);
+            // send pic to api.ai with contracted format
 
-
-                    // send pic to api.ai with contracted format
-
-              //  });
+            //  });
         }
 
     }
@@ -331,7 +333,7 @@ function checkForOfferResponse(response, senderID) {
 
     // if (response.result.metadata.intentName === "insurance.coverage.upgrade-yes") {
 
-        sendGenericMessage(senderID);
+    sendGenericMessage(senderID);
 
     // }
 
@@ -410,6 +412,10 @@ function receivedPostback(event) {
 
         }, 1500);
 
+    }
+    else if (_.includes(["YES"])) {
+        sendTextMessage(senderID, "Ok, here are some special offerings just for you :D");
+        sendGenericMessage(senderID);
     }
 
     else if (_.includes(OFFER_TYPES, payload)) {
@@ -624,6 +630,34 @@ function sendButtonMessage(recipientId) {
     callSendAPI(messageData);
 }
 
+function sendYesOrNo(recipientId, text) {
+    var messageData = {
+        recipient: {
+            id: recipientId
+        },
+        message: {
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "button",
+                    text: text,
+                    buttons: [{
+                        type: "postback",
+                        title: "Yes",
+                        payload: "YES"
+                    }, {
+                        type: "postback",
+                        title: "No",
+                        payload: "NO"
+                    }]
+                }
+            }
+        }
+    };
+
+    callSendAPI(messageData);
+}
+
 function sendPaymentDataButton(recipientId) {
     var messageData = {
         recipient: {
@@ -696,7 +730,7 @@ function sendInputChooseMessage(recipientId) {
                 type: "template",
                 payload: {
                     template_type: "button",
-                    text: "Ok, just send me an image or a text description of the object you want to check coverage for",
+                    text: "Choose your input",
                     buttons: [{
                         type: "postback",
                         title: "Image",
