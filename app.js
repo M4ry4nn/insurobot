@@ -317,7 +317,6 @@ function processApiDotAiRequest(messageText, senderID) {
     requestBot.on('response', function (response) {
         console.log("Here you got the answer: ");
         console.log(response);
-        checkForOfferResponse(response, senderID);
         sendTextMessage(senderID, response.result.fulfillment.speech);
     });
 
@@ -413,7 +412,7 @@ function receivedPostback(event) {
         }, 1500);
 
     }
-    else if (_.includes(["YES"])) {
+    else if (_.includes(["Yes"])) {
         sendTextMessage(senderID, "Ok, here are some special offerings just for you :D");
         sendGenericMessage(senderID);
     }
