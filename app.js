@@ -57,7 +57,6 @@ let STARTER_TYPES = ["CLAIM_REPORT", "EMERGENCY_AGENT", "COVERAGE_CHECK", "ACHIE
 let OFFER_TYPES = ["BUY_INSURANCE_1", "BUY_INSURANCE_2", "BUY_INSURANCE_3"];
 let PAYMENT_OPTIONS = ["PAYMENT_YES", "PAYMENT_NO"];
 let TAGS = ["animal", "jewelery", "car"];
-let SENDER_ID_GLOBAL;
 
 app.get('/webhook', function (req, res) {
     if (req.query['hub.mode'] === 'subscribe' &&
@@ -157,7 +156,6 @@ function receivedAuthentication(event) {
 
 function receivedMessage(event) {
     var senderID = event.sender.id;
-    SENDER_ID_GLOBAL = senderID;
     var recipientID = event.recipient.id;
     var timeOfMessage = event.timestamp;
     var message = event.message;
@@ -258,7 +256,7 @@ function receivedMessage(event) {
                 if (_.includes(["correct", "yes", "perfect"], messageText)) {
                     sendYesOrNo(senderID, "I am sorry. Your currenct insurance does not cover objects of this type. May I offer you a coverage upgrade for future incidents?");
                 } else {
-                   // processApiDotAiRequest(messageText, senderID);
+                    // processApiDotAiRequest(messageText, senderID);
 
                 }
 
@@ -414,7 +412,7 @@ function receivedPostback(event) {
         }, 1500);
 
     }
-    else if (_.includes(["YES"],payload)) {
+    else if (_.includes(["YES"], payload)) {
         sendTextMessage(senderID, "Ok, here are some special offerings just for you :D");
         sendGenericMessage(senderID);
     }
@@ -705,7 +703,7 @@ function sendStarterMessage(recipientId) {
                         payload: "CLAIM_REPORT"
                     }, {
                         type: "postback",
-                        title: "Achievements",
+                        title: "Report a claim",
                         payload: "ACHIEVEMENTS"
                     }, {
                         type: "postback",
@@ -1016,7 +1014,18 @@ app.get('/authorize', function (req, res) {
 
 app.get('/alarm', function (req, res) {
     console.log("sending alarm -----------------------------------------------------");
-    sendTextMessage(SENDER_ID_GLOBAL,"Hei, it's me again :) The weather forecast says it will hail around Bern today. Please bring your car to a protected place");
+    var data = {
+        "recipient": {
+            "id": req.query.id
+        },
+        "message": {
+            "text": "Hei, it's me, Pedro.⚠️ The weather forecast says it will hail around Bern tomorrow ☔ Please drive your car to a protected place. This prevents damages :)"
+        }
+    };
+    callSendAPI(data);
+    http://localhost:5000/alarm?id=1185344571489010
+
+    res.sendStatus(200);
 });
 
 /*
