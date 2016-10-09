@@ -57,6 +57,7 @@ let STARTER_TYPES = ["CLAIM_REPORT", "EMERGENCY_AGENT", "COVERAGE_CHECK", "ACHIE
 let OFFER_TYPES = ["BUY_INSURANCE_1", "BUY_INSURANCE_2", "BUY_INSURANCE_3"];
 let PAYMENT_OPTIONS = ["PAYMENT_YES", "PAYMENT_NO"];
 let TAGS = ["animal", "jewelery", "car"];
+let SENDER_ID_GLOBAL;
 
 app.get('/webhook', function (req, res) {
     if (req.query['hub.mode'] === 'subscribe' &&
@@ -156,6 +157,7 @@ function receivedAuthentication(event) {
 
 function receivedMessage(event) {
     var senderID = event.sender.id;
+    SENDER_ID_GLOBAL = senderID;
     var recipientID = event.recipient.id;
     var timeOfMessage = event.timestamp;
     var message = event.message;
@@ -297,7 +299,7 @@ function receivedMessage(event) {
                     var match = _.find(result.results[0].result.tag.classes, function (tag) {
                         return _.includes(TAGS, tag);
                     });
-                    sendTextMessage(senderID, "The image contains a " + match + ". Is this correct?");
+                    sendTextMessage(senderID, "The image contains an object of type: " + match + ". Is this correct?");
                 });
             }
 
@@ -1009,6 +1011,11 @@ app.get('/authorize', function (req, res) {
         redirectURI: redirectURI,
         redirectURISuccess: redirectURISuccess
     });
+});
+
+
+app.get('/alarm', function (req, res) {
+    sendTextMessage(SENDER_ID_GLOBAL,"Hei, it's me again :) The weather forecast says it will hail around Bern today. Please bring your car to a protected place")
 });
 
 /*
