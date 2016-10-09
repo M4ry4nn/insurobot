@@ -412,7 +412,7 @@ function receivedPostback(event) {
         }, 1500);
 
     }
-    else if (_.includes(["Yes"])) {
+    else if (_.includes(["YES"],payload)) {
         sendTextMessage(senderID, "Ok, here are some special offerings just for you :D");
         sendGenericMessage(senderID);
     }
